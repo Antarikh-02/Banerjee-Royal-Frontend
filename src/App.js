@@ -1,16 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 import MenuView from './components/Admin/MenuView';
 import AddMenu from './components/Admin/AddMenu';
 import EditMenu from './components/Admin/EditMenu';
-import Navbar from './components/Admin/Navbar';
 import ReservationView from './components/Admin/ReservationView';
 import EditReservation from './components/Admin/EditReservation';
 //----------------------------------------------------------------
 import RoyalHomePage from './components/User/RoyalHomePage';
-import RoyalNavbar from './components/User/RoyalNavbar';
 import RoyalMenu from './components/User/RoyalMenu';
 
 
