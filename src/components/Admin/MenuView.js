@@ -24,7 +24,7 @@ const MenuView = () => {
   // Fetch all menu items
   const fetchData = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/menu');
+      const res = await axios.get('https://banerjee-royal-backend.onrender.com/menu');
       setItems(res.data.menus || []);
     } catch (err) {
       console.error('Error fetching menu items:', err);
@@ -54,7 +54,7 @@ const MenuView = () => {
   const handleDelete = async id => {
     if (!window.confirm('Delete this menu item?')) return;
     try {
-      await axios.delete(`http://localhost:5000/menu/${id}`);
+      await axios.delete(`https://banerjee-royal-backend.onrender.com/${id}`);
       fetchData();
     } catch (err) {
       console.error('Error deleting menu item:', err);

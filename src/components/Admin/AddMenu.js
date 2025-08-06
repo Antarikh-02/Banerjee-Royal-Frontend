@@ -27,7 +27,7 @@ const AddMenu = () => {
         vegType,
       };
 
-      await axios.post("http://localhost:5000/menu/add", payload);
+      await axios.post("https://banerjee-royal-backend.onrender.com/menu/add", payload);
       setName("");
       setDescription("");
       setPrice("");

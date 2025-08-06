@@ -27,7 +27,7 @@ const EditMenu = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/menu/${id}`, {
+      await axios.patch(`https://banerjee-royal-backend.onrender.com/menu/${id}`, {
         name,
         description,
         price,

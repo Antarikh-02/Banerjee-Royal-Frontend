@@ -24,7 +24,7 @@ const ReservationView = () => {
   // Fetch reservations from backend
   const fetchReservations = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/reservation');
+      const res = await axios.get('https://banerjee-royal-backend.onrender.com/reservation');
       setReservations(res.data.reservations || []);
     } catch (err) {
       console.error('Error fetching reservations:', err);
@@ -41,7 +41,7 @@ const ReservationView = () => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:5000/reservation/${id}`);
+      await axios.delete(`https://banerjee-royal-backend.onrender.com/reservation/${id}`);
       fetchReservations();
     } catch (err) {
       console.error('Error deleting reservation:', err);

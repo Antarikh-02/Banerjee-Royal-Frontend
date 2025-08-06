@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RoyalNavbar from './RoyalNavbar';
+import RoyalFooter from './RoyalFooter'
 
 
 const RoyalHomePage = () => {
@@ -23,12 +24,12 @@ const RoyalHomePage = () => {
   useEffect(() => {
     const fetchFeaturedMenu = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/menu');
+        const response = await axios.get('https://banerjee-royal-backend.onrender.com/menu');
         const allItems = response.data.menus || [];
         
         // Filter to get featured items (could be based on category or other criteria)
         const featured = allItems.filter(item => 
-          ['Main Course', 'Specialty'].includes(item.category)
+          ['Starter', 'Specialty'].includes(item.category)
         ).slice(0, 4);
         
         setFeaturedMenu(featured);
@@ -58,7 +59,7 @@ const RoyalHomePage = () => {
       // Format date to ISO string
       const formattedDate = new Date(reservationForm.date).toISOString();
       
-      const response = await axios.post('http://localhost:5000/reservation/add', {
+      const response = await axios.post('https://banerjee-royal-backend.onrender.com/reservation/add', {
         ...reservationForm,
         date: formattedDate,
         status: 'Pending'
@@ -151,14 +152,7 @@ const RoyalHomePage = () => {
               and every meal is a regal experience.
             </p>
             <div className="flex items-center space-x-4">
-              <div className="bg-amber-100 p-4 rounded-lg text-center">
-                <span className="block text-3xl font-bold text-amber-700">75+</span>
-                <span className="text-amber-800">Years of Excellence</span>
-              </div>
-              <div className="bg-amber-100 p-4 rounded-lg text-center">
-                <span className="block text-3xl font-bold text-amber-700">200+</span>
-                <span className="text-amber-800">Royal Recipes</span>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -215,7 +209,7 @@ const RoyalHomePage = () => {
 
           <div className="text-center mt-12">
             <a 
-              href="/menu" 
+              href="/royalmenu" 
               className="inline-block bg-amber-700 hover:bg-amber-800 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300"
             >
               View Full Menu
@@ -355,66 +349,7 @@ const RoyalHomePage = () => {
           </form>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-amber-900 text-amber-100 py-16 px-4">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-1">
-            <h3 className="text-2xl font-bold mb-4">Banerjee Royals</h3>
-            <p className="mb-4">
-              Preserving the royal culinary heritage of Bengal since 1947
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-amber-200 hover:text-white">
-                <span className="sr-only">Facebook</span>
-                <i className="fab fa-facebook text-xl"></i>
-              </a>
-              <a href="#" className="text-amber-200 hover:text-white">
-                <span className="sr-only">Instagram</span>
-                <i className="fab fa-instagram text-xl"></i>
-              </a>
-              <a href="#" className="text-amber-200 hover:text-white">
-                <span className="sr-only">Twitter</span>
-                <i className="fab fa-twitter text-xl"></i>
-              </a>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Hours</h4>
-            <ul className="space-y-2">
-              <li>Monday - Friday: 11am - 10pm</li>
-              <li>Saturday: 10am - 11pm</li>
-              <li>Sunday: 10am - 9pm</li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Contact</h4>
-            <address className="not-italic">
-              <p className="mb-2">12 Royal Avenue, Kolkata</p>
-              <p className="mb-2">West Bengal, India</p>
-              <p className="mb-2">Phone: +91 98765 43210</p>
-              <p>Email: contact@banerjeeroys.com</p>
-            </address>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition">Home</a></li>
-              <li><a href="#" className="hover:text-white transition">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition">Menu</a></li>
-              <li><a href="#" className="hover:text-white transition">Reservations</a></li>
-              <li><a href="#" className="hover:text-white transition">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-amber-700 text-center">
-          <p>&copy; {new Date().getFullYear()} Banerjee Royals. All rights reserved.</p>
-        </div>
-      </footer>
+      <RoyalFooter/>
     </div>
   );
 };

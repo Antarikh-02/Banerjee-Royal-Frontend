@@ -7,9 +7,12 @@ import AddMenu from './components/Admin/AddMenu';
 import EditMenu from './components/Admin/EditMenu';
 import Navbar from './components/Admin/Navbar';
 import ReservationView from './components/Admin/ReservationView';
+import EditReservation from './components/Admin/EditReservation';
 //----------------------------------------------------------------
 import RoyalHomePage from './components/User/RoyalHomePage';
 import RoyalNavbar from './components/User/RoyalNavbar';
+import RoyalMenu from './components/User/RoyalMenu';
+
 
 function App() {
   return (
@@ -24,8 +27,12 @@ function App() {
             element = {<EditMenu/>}/>
          <Route path = '/reservationview'
             element = {<ReservationView/>}/>
+         <Route path = '/editreservation'
+            element = {<EditReservation/>}/>
          <Route path = '/homepage'
             element = {<RoyalHomePage/>}/>
+         <Route path = '/royalmenu'
+            element = {<RoyalMenu/>}/>
         </Routes>
         </Router>
   </>
