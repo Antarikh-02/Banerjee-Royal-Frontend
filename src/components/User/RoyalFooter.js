@@ -1,31 +1,48 @@
 import React from "react";
-import { Link } from "react-router-dom"; // ✅ Import Link
+import { Link } from "react-router-dom";
 
 const RoyalFooter = () => {
   return (
     <footer className="bg-amber-900 text-amber-100 py-16 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Brand */}
         <div className="md:col-span-1">
           <h3 className="text-2xl font-bold mb-4">Banerjee Royals</h3>
           <p className="mb-4">
             Preserving the royal culinary heritage of Bengal since 1947
           </p>
           <div className="flex space-x-4">
-            <a href="#" className="text-amber-200 hover:text-white">
-              <span className="sr-only">Facebook</span>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-200 hover:text-white"
+              aria-label="Facebook"
+            >
               <i className="fab fa-facebook text-xl"></i>
             </a>
-            <a href="#" className="text-amber-200 hover:text-white">
-              <span className="sr-only">Instagram</span>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-200 hover:text-white"
+              aria-label="Instagram"
+            >
               <i className="fab fa-instagram text-xl"></i>
             </a>
-            <a href="#" className="text-amber-200 hover:text-white">
-              <span className="sr-only">Twitter</span>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-200 hover:text-white"
+              aria-label="Twitter"
+            >
               <i className="fab fa-twitter text-xl"></i>
             </a>
           </div>
         </div>
 
+        {/* Hours */}
         <div>
           <h4 className="text-lg font-semibold mb-4">Hours</h4>
           <ul className="space-y-2">
@@ -35,16 +52,18 @@ const RoyalFooter = () => {
           </ul>
         </div>
 
+        {/* Contact */}
         <div>
           <h4 className="text-lg font-semibold mb-4">Contact</h4>
-          <address className="not-italic">
-            <p className="mb-2">12 Royal Avenue, Kolkata</p>
-            <p className="mb-2">West Bengal, India</p>
-            <p className="mb-2">Phone: +91 98765 43210</p>
+          <address className="not-italic space-y-2">
+            <p>12 Royal Avenue, Kolkata</p>
+            <p>West Bengal, India</p>
+            <p>Phone: +91 98765 43210</p>
             <p>Email: contact@banerjeeroys.com</p>
           </address>
         </div>
 
+        {/* Quick Links */}
         <div>
           <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
           <ul className="space-y-2">
@@ -57,6 +76,7 @@ const RoyalFooter = () => {
         </div>
       </div>
 
+      {/* Footer bottom */}
       <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-amber-700 text-center">
         <p>&copy; {new Date().getFullYear()} Banerjee Royals. All rights reserved.</p>
       </div>
