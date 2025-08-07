@@ -40,10 +40,12 @@ const RoyalNavbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
+            
            <div className='flex flex-col items-center justify-center relative text-center mt-[3rem] ml-[-4.5rem] '>
             <img 
                 src={require('../Images/Royal logo.png')}
-                alt="Banerjee Royals interior" 
+                alt="Banerjee Royals interior"
+                
                 className="w-[180px] lg:w-[200px] h-auto mb-4 "
               />
             
@@ -55,7 +57,7 @@ const RoyalNavbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
               <Link 
-                to="/" 
+                onClick={() => document.getElementById('Home').scrollIntoView({ behavior: 'smooth' })}
                 className="text-amber-100 hover:text-white px-3 py-2 rounded-md text-md font-medium transition duration-300"
               >
                 Home

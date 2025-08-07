@@ -90,7 +90,7 @@ const RoyalHomePage = () => {
   return (
     <div className="font-serif bg-amber-50 text-gray-800">
       <RoyalNavbar/>
-      <div className="relative h-screen flex items-center justify-center overflow-hidden">
+      <div id='Home'  className="relative h-screen flex items-center justify-center overflow-hidden">
         
         <div className="absolute inset-0 bg-black/60 z-10">
         <div className='flex flex-col items-center justify-center relative z-20 text-white text-center mt-[10rem]'>
