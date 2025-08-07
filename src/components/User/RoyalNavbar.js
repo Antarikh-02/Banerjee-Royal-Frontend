@@ -33,7 +33,7 @@ const RoyalNavbar = () => {
   return (
     <nav 
       className={`fixed w-full z-50 transition-all duration-500 ${
-        scrolled ? 'bg-amber-900/95 shadow-xl py-2' : 'bg-amber-900/80 py-4'
+        scrolled ? 'bg-amber-900/95 shadow-xl py-2' : 'bg-amber-900/80 py-2'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,12 +78,7 @@ const RoyalNavbar = () => {
               >
                 Reserve
               </Link>
-              <Link 
-                to="/royalreservation" 
-                className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300"
-              >
-                My Reservations
-              </Link>
+              
             </div>
           </div>
 
@@ -145,7 +140,7 @@ const RoyalNavbar = () => {
             Menu
           </Link>
           <Link 
-            to="/reservation" 
+            onClick={() => document.getElementById('reservation').scrollIntoView({ behavior: 'smooth' })}
             className="bg-amber-600 hover:bg-amber-700 text-white block px-3 py-2 rounded-md text-base font-medium text-center mx-4 my-2"
           >
             Reserve Table
