@@ -103,7 +103,7 @@ const RoyalHomePage = () => {
 
         <div className="bg-[url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center absolute inset-0"></div>
         
-        <div className="relative z-20 text-center px-4">
+        <div className="relative z-20 text-center px-4 mt-32 lg:mt-0">
           <h1 className="text-5xl md:text-7xl font-bold text-amber-100 mb-4 tracking-wider">
             Banerjee Royals
           </h1>

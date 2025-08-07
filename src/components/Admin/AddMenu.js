@@ -35,7 +35,7 @@ const AddMenu = () => {
       setCategory("Starter");
       setVegType("Veg");
 
-      navigate("/");
+      navigate("/menuview");
     } catch (err) {
       console.error("Error submitting menu item:", err.response?.data || err);
     }

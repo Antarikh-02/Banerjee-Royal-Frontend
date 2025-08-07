@@ -34,7 +34,7 @@ const Navbar = () => {
           {/* Desktop Links */}
           <nav className="hidden md:flex space-x-6 items-center">
             <Link
-              to="/"
+              to="/menuview"
               className="text-gray-700 hover:text-indigo-600 transition-colors"
             >
               Menu

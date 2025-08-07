@@ -16,7 +16,7 @@ function App() {
   <>
   <Router>
   <Routes>
-         <Route path = '/'
+         <Route path = '/menuview'
             element = {<MenuView/>}/>
          <Route path = '/addmenu'
             element = {<AddMenu/>}/>
@@ -26,7 +26,7 @@ function App() {
             element = {<ReservationView/>}/>
          <Route path = '/editreservation'
             element = {<EditReservation/>}/>
-         <Route path = '/homepage'
+         <Route path = '/'
             element = {<RoyalHomePage/>}/>
          <Route path = '/royalmenu'
             element = {<RoyalMenu/>}/>
