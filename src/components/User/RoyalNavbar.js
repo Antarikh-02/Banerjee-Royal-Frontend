@@ -78,6 +78,12 @@ const RoyalNavbar = () => {
               >
                 Reserve
               </Link>
+              <Link 
+                to="/royalreservation" 
+                className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300"
+              >
+                My Reservations
+              </Link>
             </div>
           </div>
 
