@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RoyalNavbar from './RoyalNavbar';
 import RoyalFooter from './RoyalFooter'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 
 const RoyalHomePage = () => {
@@ -29,7 +31,7 @@ const RoyalHomePage = () => {
         
         // Filter to get featured items (could be based on category or other criteria)
         const featured = allItems.filter(item => 
-          ['Starter', 'Specialty'].includes(item.category)
+          ['Special Biryani', 'Biryani', 'Specialty'].includes(item.category)
         ).slice(0, 4);
         
         setFeaturedMenu(featured);
@@ -160,63 +162,101 @@ const RoyalHomePage = () => {
 
       {/* Special Menu Section */}
       <section id="menu" className="py-20 bg-amber-100 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-amber-900 mb-4">Royal Specialties</h2>
-            <div className="w-24 h-1 bg-amber-600 mx-auto mb-6"></div>
-            <p className="text-xl text-amber-800 max-w-2xl mx-auto">
-              Experience our signature dishes, crafted using recipes passed down through generations of royal chefs.
-            </p>
-          </div>
+  <div className="max-w-6xl mx-auto">
+    <div className="text-center mb-16">
+      <h2 className="text-4xl font-bold text-amber-900 mb-4">Royal Specialties</h2>
+      <div className="w-24 h-1 bg-amber-600 mx-auto mb-6"></div>
+      <p className="text-xl text-amber-800 max-w-2xl mx-auto">
+        Experience our signature dishes, crafted using recipes passed down through generations of royal chefs.
+      </p>
+    </div>
 
-          {loadingMenu ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-700 mb-4"></div>
-              <p className="text-amber-800 text-lg">Loading our royal specialties...</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {featuredMenu.map(item => (
-                <div key={item._id} className="bg-white rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105">
-                  <div className="relative h-48 overflow-hidden">
+    {loadingMenu ? (
+      <div className="text-center py-12">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-700 mb-4"></div>
+        <p className="text-amber-800 text-lg">Loading our royal specialties...</p>
+      </div>
+    ) : (
+      <>
+        {/* Mobile Swiper */}
+        <div className="block md:hidden">
+          <Swiper spaceBetween={16} slidesPerView={1.2}>
+            {featuredMenu.map(item => (
+              <SwiperSlide key={item._id}>
+                <div className="bg-white rounded-lg overflow-hidden shadow-lg transform transition hover:scale-105 max-w-xs mx-auto">
+                  <div className="relative h-40 overflow-hidden">
                     {item.image ? (
-                      <img 
-                        src={item.image} 
-                        alt={item.name} 
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
+                      <div className="bg-gray-200 flex items-center justify-center h-full">
                         <span className="text-gray-500">No image</span>
                       </div>
                     )}
-                    <div className="absolute top-4 right-4 bg-amber-700 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    <div className="absolute top-3 right-3 bg-amber-700 text-white px-2 py-1 rounded-full text-xs">
                       {item.vegType === 'Veg' ? '🥬 Veg' : '🍗 Non-Veg'}
                     </div>
                   </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-xl font-bold text-amber-900">{item.name}</h3>
-                      <span className="text-lg font-semibold text-amber-700">₹{item.price}</span>
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="text-lg font-bold text-amber-900">{item.name}</h3>
+                      <span className="text-base font-semibold text-amber-700">₹{item.price}</span>
                     </div>
-                    <p className="text-gray-600 mb-4">{item.description}</p>
-                    <div className="text-sm text-amber-600 font-medium">{item.category}</div>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+                      {item.description}
+                    </p>
+                    <div className="text-xs text-amber-600">{item.category}</div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-
-          <div className="text-center mt-12">
-            <a 
-              href="/royalmenu" 
-              className="inline-block bg-amber-700 hover:bg-amber-800 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300"
-            >
-              View Full Menu
-            </a>
-          </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-      </section>
+
+        {/* Desktop Grid */}
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredMenu.map(item => (
+            <div
+              key={item._id}
+              className="bg-white rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 max-w-xs mx-auto"
+            >
+              <div className="relative h-40 overflow-hidden">
+                {item.image ? (
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="bg-gray-200 flex items-center justify-center h-full">
+                    <span className="text-gray-500">No image</span>
+                  </div>
+                )}
+                <div className="absolute top-3 right-3 bg-amber-700 text-white px-2 py-1 rounded-full text-xs">
+                  {item.vegType === 'Veg' ? '🥬 Veg' : '🍗 Non-Veg'}
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="text-lg font-bold text-amber-900">{item.name}</h3>
+                  <span className="text-base font-semibold text-amber-700">₹{item.price}</span>
+                </div>
+                <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+                  {item.description}
+                </p>
+                <div className="text-xs text-amber-600">{item.category}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+
+    <div className="text-center mt-12">
+      <a
+        href="/royalmenu"
+        className="inline-block bg-amber-700 hover:bg-amber-800 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300"
+      >
+        View Full Menu
+      </a>
+    </div>
+  </div>
+</section>
 
       {/* Reservation Section */}
       <section id="reservation" className="py-20 px-4 max-w-6xl mx-auto">

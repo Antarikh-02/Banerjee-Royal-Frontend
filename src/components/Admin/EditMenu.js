@@ -35,7 +35,7 @@ const EditMenu = () => {
         category,
         vegType
       });
-      navigate('/');
+      navigate('/menuview');
     } catch (err) {
       console.error('Error updating menu item:', err);
     }
@@ -106,6 +106,9 @@ const EditMenu = () => {
             <option value="">Select Category</option>
             <option value="Starter">Starter</option>
             <option value="Main Course">Main Course</option>
+            <option value="Biryani">Biryani</option>
+            <option value="Special Biryani">Special Biryani</option>
+            <option value="Naan">Naan</option>
             <option value="Dessert">Dessert</option>
             <option value="Beverage">Beverage</option>
           </select>
@@ -132,7 +135,7 @@ const EditMenu = () => {
           >
             Update
           </button>
-          <Link to="/">
+          <Link to="/menuview">
             <button
               type="button"
               className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700"

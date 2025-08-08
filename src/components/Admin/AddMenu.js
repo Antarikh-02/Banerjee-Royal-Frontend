@@ -121,6 +121,9 @@ const AddMenu = () => {
           >
             <option value="Starter">Starter</option>
             <option value="Main Course">Main Course</option>
+            <option value="Biryani">Biryani</option>
+            <option value="Special Biryani">Special Biryani</option>
+            <option value="Naan">Naan</option>
             <option value="Dessert">Dessert</option>
             <option value="Beverage">Beverage</option>
           </select>
