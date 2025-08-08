@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const RoyalFooter = () => {
   return (
-    <footer className="bg-amber-900 text-amber-100 py-16 px-4">
+    <footer className="bg-amber-900 text-amber-100 py-16 px-4 max-lg:hidden">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand */}
         <div className="md:col-span-1">
