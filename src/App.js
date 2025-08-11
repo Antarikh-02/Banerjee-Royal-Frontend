@@ -10,6 +10,9 @@ import EditReservation from './components/Admin/EditReservation';
 import RoyalHomePage from './components/User/RoyalHomePage';
 import RoyalMenu from './components/User/RoyalMenu';
 
+//----------------------------------------------------------------
+import UserLogin from './components/Login/Userlogin';
+
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
             element = {<RoyalHomePage/>}/>
          <Route path = '/royalmenu'
             element = {<RoyalMenu/>}/>
+         <Route path = '/userlogin'
+            element = {<UserLogin/>}/>
         </Routes>
         </Router>
   </>

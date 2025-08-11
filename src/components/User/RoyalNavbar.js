@@ -1,16 +1,59 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const RoyalNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
+
+  // Initial auth check on mount
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const rawUser = localStorage.getItem('user');
+        const user = rawUser ? JSON.parse(rawUser) : null;
+        const token = localStorage.getItem('token');
+        const authenticated = !!(token || user?.email);
+        setIsAuthenticated(authenticated);
+      } catch (e) {
+        console.warn('Error reading auth info from localStorage', e);
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Listen for auth changes and storage events (other tabs)
+  useEffect(() => {
+    const handleAuthChange = () => {
+      try {
+        const rawUser = localStorage.getItem('user');
+        const user = rawUser ? JSON.parse(rawUser) : null;
+        const token = localStorage.getItem('token');
+        const authenticated = !!(token || user?.email);
+        setIsAuthenticated(authenticated);
+      } catch (e) {
+        setIsAuthenticated(false);
+      }
+    };
+
+    window.addEventListener('authChange', handleAuthChange);
+    window.addEventListener('storage', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('authChange', handleAuthChange);
+      window.removeEventListener('storage', handleAuthChange);
+    };
+  }, []);
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -27,11 +70,28 @@ const RoyalNavbar = () => {
   }, []);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(prev => !prev);
+  };
+
+  const handleLogout = () => {
+    // Clear the same keys set by login component
+    localStorage.removeItem('user');
+    localStorage.removeItem('usertype');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('token');
+
+    // Notify other components (same tab)
+    window.dispatchEvent(new Event('authChange'));
+
+    // Close menu if open
+    setIsMenuOpen(false);
+
+    // Navigate to home (or login if you prefer)
+    navigate('/', { replace: true });
   };
 
   return (
-    <nav 
+    <nav
       className={`fixed w-full z-50 transition-all duration-500 ${
         scrolled ? 'bg-amber-900/95 shadow-xl py-2' : 'bg-amber-900/80 py-2'
       }`}
@@ -40,47 +100,62 @@ const RoyalNavbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            
-           <div className='flex flex-col items-center justify-center relative text-center mt-[3rem] ml-[-4.5rem] '>
-            <img 
-                src={require('../Images/Royal logo.png')}
-                alt="Banerjee Royals interior"
-                
-                className="w-[180px] lg:w-[200px] h-auto mb-4 "
-              />
-            
+            <div className="flex flex-col items-center justify-center relative text-center mt-[3rem] ml-[-4.5rem]">
+              <NavLink to="/">
+                <img
+                  src={require('../Images/Royal logo.png')}
+                  alt="Banerjee Royals interior"
+                  className="w-[180px] lg:w-[200px] h-auto mb-4"
+                />
+              </NavLink>
             </div>
-            <h1 className="max-lg:hidden text-xl font-bold text-[#eca427] mt-[0.1rem] ml-[-2.5rem]">BANERJEE ROYALS</h1>
+            <NavLink to="/">
+              <h1 className="max-lg:hidden text-xl font-bold text-[#eca427] mt-[0.1rem] ml-[-2.5rem]">
+                BANERJEE ROYALS
+              </h1>
+            </NavLink>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
-              <Link 
-                onClick={() => document.getElementById('Home').scrollIntoView({ behavior: 'smooth' })}
+              <button
+                onClick={() => document.getElementById('Home')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-amber-100 hover:text-white px-3 py-2 rounded-md text-md font-medium transition duration-300"
               >
                 Home
-              </Link>
-              <Link 
-                to="/about" 
-                className="text-amber-100 hover:text-white px-3 py-2 rounded-md text-md font-medium transition duration-300"
-              >
+              </button>
+
+              <Link to="/royalabout" className="text-amber-100 hover:text-white px-3 py-2 rounded-md text-md font-medium transition duration-300">
                 About
               </Link>
-              <Link 
-                onClick={() => document.getElementById('menu').scrollIntoView({ behavior: 'smooth' })}
-                className="text-amber-100 hover:text-white px-3 py-2 rounded-md text-md font-medium transition duration-300"
-              >
+
+              <Link to="/royalmenu" className="text-amber-100 hover:text-white px-3 py-2 rounded-md text-md font-medium transition duration-300">
                 Menu
               </Link>
-              <Link 
-                onClick={() => document.getElementById('reservation').scrollIntoView({ behavior: 'smooth' })}
+
+              <button
+                onClick={() => document.getElementById('reservation')?.scrollIntoView({ behavior: 'smooth' })}
                 className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300"
               >
                 Reserve
-              </Link>
-              
+              </button>
+
+              {isAuthenticated ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to="/userlogin"
+                  className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300"
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
 
@@ -89,7 +164,7 @@ const RoyalNavbar = () => {
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2 rounded-md text-amber-200 hover:text-white focus:outline-none"
-              aria-expanded="false"
+              aria-expanded={isMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
               {/* Hamburger Icon */}
@@ -118,35 +193,47 @@ const RoyalNavbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div 
-        className={`${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} 
-        md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-amber-800 shadow-xl`}
+      <div
+        className={`${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-amber-800 shadow-xl`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <Link 
-            to="/" 
-            className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
+          <Link to="/" className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
             Home
           </Link>
-          <Link 
-            to="/about" 
-            className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
+          <Link to="/about" className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
             About
           </Link>
-          <Link 
-            to="/menu" 
-            className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
+          <Link to="/royalmenu" className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
             Menu
           </Link>
           <Link 
-            onClick={() => document.getElementById('reservation').scrollIntoView({ behavior: 'smooth' })}
-            className="bg-amber-600 hover:bg-amber-700 text-white block px-3 py-2 rounded-md text-base font-medium text-center mx-4 my-2"
-          >
+            
+            onClick={() => document.getElementById('reservation')?.scrollIntoView({ behavior: 'smooth' })}
+          className="text-amber-100 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
             Reserve Table
           </Link>
+
+          <div className="px-3">
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                className="w-full bg-red-600 hover:bg-red-700 text-white block px-3 py-2 rounded-md text-base font-medium text-center"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/userlogin"
+                onClick={() => setIsMenuOpen(false)}
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white block px-3 py-2 rounded-md text-base font-medium text-center"
+              >
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>
