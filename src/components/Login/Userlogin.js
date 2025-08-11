@@ -26,9 +26,7 @@ export default function UserLogin() {
     } catch (e) {
       console.warn('Error reading user from localStorage', e);
     }
-  }, []);
-
-  const handleToggle = () => setToggleSignUp(prev => !prev);
+  }, [location.pathname, navigate]); // ✅ Fixed missing dependencies
 
   const handleLoginSubmit = async e => {
     e.preventDefault();
@@ -110,30 +108,33 @@ export default function UserLogin() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-100 font-serif flex flex-col items-center justify-center p-4">
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar toastClassName="bg-amber-100 text-amber-900 border border-amber-300" />
+      <ToastContainer 
+        position="top-right" 
+        autoClose={2000} 
+        hideProgressBar 
+        toastClassName="bg-amber-100 text-amber-900 border border-amber-300" 
+      />
       
-      <div className="w-full max-w-md mb-10 flex justify-center">
-        <div className="bg-gradient-to-br from-amber-700 to-amber-900 p-4 rounded-full border-4 border-amber-500/50 shadow-xl">
-          <img 
-            src={require('../Images/Banerjee Royals.png')}
-            alt="Banerjee Royals Logo" 
-            className="w-32 h-32 object-contain"
-          />
+      <div className="w-full max-w-sm mb-6 flex justify-center">
+        <div className="bg-gradient-to-br from-amber-700 to-amber-900 p-3 rounded-full border-2 border-amber-500 shadow-lg">
+          <div className="bg-amber-800 w-16 h-16 rounded-full flex items-center justify-center">
+            <span className="text-amber-200 text-xl font-bold">BR</span>
+          </div>
         </div>
       </div>
       
-      <div className="w-full max-w-lg bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl shadow-2xl border border-amber-300 overflow-hidden">
+      <div className="w-full max-w-sm bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg border border-amber-300 overflow-hidden">
         {/* Royal Toggle */}
         <div className="flex bg-amber-900">
           <button 
             onClick={() => setToggleSignUp(false)}
-            className={`flex-1 py-5 text-center text-xl font-bold transition-all duration-300 ${!toggleSignUp ? 'bg-amber-700 text-amber-50' : 'bg-amber-900/50 text-amber-200 hover:bg-amber-800'}`}
+            className={`flex-1 py-4 text-center font-bold transition-all duration-300 ${!toggleSignUp ? 'bg-amber-700 text-amber-50' : 'bg-amber-900/50 text-amber-200 hover:bg-amber-800'}`}
           >
             Log in
           </button>
           <button 
             onClick={() => setToggleSignUp(true)}
-            className={`flex-1 py-5 text-center text-xl font-bold transition-all duration-300 ${toggleSignUp ? 'bg-amber-700 text-amber-50' : 'bg-amber-900/50 text-amber-200 hover:bg-amber-800'}`}
+            className={`flex-1 py-4 text-center font-bold transition-all duration-300 ${toggleSignUp ? 'bg-amber-700 text-amber-50' : 'bg-amber-900/50 text-amber-200 hover:bg-amber-800'}`}
           >
             Sign up
           </button>
@@ -141,15 +142,15 @@ export default function UserLogin() {
         
         {/* Login Form */}
         {!toggleSignUp && (
-          <div className="p-8">
-            <h2 className="text-3xl font-bold text-amber-900 mb-8 text-center">Royal Login</h2>
-            <form onSubmit={handleLoginSubmit} className="space-y-6">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold text-amber-900 mb-6 text-center">Royal Login</h2>
+            <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
-                <label className="block text-amber-800 font-medium mb-2">Email</label>
+                <label className="block text-amber-800 text-sm font-medium mb-1">Email</label>
                 <input
                   type="email"
                   placeholder="Your royal email"
-                  className="w-full px-4 py-3 rounded-lg border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 rounded border border-amber-300 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
                   value={loginEmail}
                   onChange={e => setLoginEmail(e.target.value)}
                   autoComplete="username"
@@ -157,30 +158,30 @@ export default function UserLogin() {
               </div>
               
               <div>
-                <label className="block text-amber-800 font-medium mb-2">Password</label>
+                <label className="block text-amber-800 text-sm font-medium mb-1">Password</label>
                 <input
                   type="password"
                   placeholder="Your royal password"
-                  className="w-full px-4 py-3 rounded-lg border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 rounded border border-amber-300 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
                   value={loginPassword}
                   onChange={e => setLoginPassword(e.target.value)}
                   autoComplete="current-password"
                 />
               </div>
               
-              <div className="pt-4">
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white py-4 rounded-lg text-xl font-semibold transition duration-300 shadow-lg"
+                  className="w-full bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white py-3 rounded font-medium transition duration-300 shadow"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Accessing Royalty...
+                      Accessing...
                     </div>
                   ) : "Enter the Palace"}
                 </button>
@@ -191,15 +192,15 @@ export default function UserLogin() {
         
         {/* Signup Form */}
         {toggleSignUp && (
-          <div className="p-8">
-            <h2 className="text-3xl font-bold text-amber-900 mb-8 text-center">Royal Registration</h2>
-            <form onSubmit={handleSignupSubmit} className="space-y-6">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold text-amber-900 mb-6 text-center">Royal Registration</h2>
+            <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div>
-                <label className="block text-amber-800 font-medium mb-2">Full Name</label>
+                <label className="block text-amber-800 text-sm font-medium mb-1">Full Name</label>
                 <input
                   type="text"
                   placeholder="Your royal name"
-                  className="w-full px-4 py-3 rounded-lg border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 rounded border border-amber-300 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
                   value={signupName}
                   onChange={e => setSignupName(e.target.value)}
                   autoComplete="name"
@@ -207,11 +208,11 @@ export default function UserLogin() {
               </div>
               
               <div>
-                <label className="block text-amber-800 font-medium mb-2">Email</label>
+                <label className="block text-amber-800 text-sm font-medium mb-1">Email</label>
                 <input
                   type="email"
                   placeholder="Your royal email"
-                  className="w-full px-4 py-3 rounded-lg border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 rounded border border-amber-300 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
                   value={signupEmail}
                   onChange={e => setSignupEmail(e.target.value)}
                   autoComplete="email"
@@ -219,30 +220,30 @@ export default function UserLogin() {
               </div>
               
               <div>
-                <label className="block text-amber-800 font-medium mb-2">Password</label>
+                <label className="block text-amber-800 text-sm font-medium mb-1">Password</label>
                 <input
                   type="password"
                   placeholder="Create royal password"
-                  className="w-full px-4 py-3 rounded-lg border border-amber-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 rounded border border-amber-300 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
                   value={signupPassword}
                   onChange={e => setSignupPassword(e.target.value)}
                   autoComplete="new-password"
                 />
               </div>
               
-              <div className="pt-4">
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white py-4 rounded-lg text-xl font-semibold transition duration-300 shadow-lg"
+                  className="w-full bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white py-3 rounded font-medium transition duration-300 shadow"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Joining Royalty...
+                      Registering...
                     </div>
                   ) : "Become Royalty"}
                 </button>
@@ -252,12 +253,12 @@ export default function UserLogin() {
         )}
       </div>
       
-      <div className="mt-12 text-center text-amber-800 max-w-md">
-        <p className="text-lg">
+      <div className="mt-8 text-center text-amber-800 max-w-xs">
+        <p className="text-sm italic">
           "Experience the regal dining journey reserved for our esteemed guests"
         </p>
-        <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto my-4"></div>
-        <p className="text-sm">
+        <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto my-3"></div>
+        <p className="text-xs">
           By accessing our royal services, you agree to our terms of nobility and privacy decree
         </p>
       </div>
