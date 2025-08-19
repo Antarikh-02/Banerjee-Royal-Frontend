@@ -9,6 +9,7 @@ import EditReservation from './components/Admin/EditReservation';
 //----------------------------------------------------------------
 import RoyalHomePage from './components/User/RoyalHomePage';
 import RoyalMenu from './components/User/RoyalMenu';
+import MyRoyalReservations from './components/User/MyRoyalReservation';
 
 //----------------------------------------------------------------
 import UserLogin from './components/Login/Userlogin';
@@ -33,6 +34,8 @@ function App() {
             element = {<RoyalHomePage/>}/>
          <Route path = '/royalmenu'
             element = {<RoyalMenu/>}/>
+         <Route path = '/myroyalreservations'
+            element = {<MyRoyalReservations/>}/>
          <Route path = '/userlogin'
             element = {<UserLogin/>}/>
         </Routes>

@@ -26,7 +26,7 @@ export default function UserLogin() {
     } catch (e) {
       console.warn('Error reading user from localStorage', e);
     }
-  }, [location.pathname, navigate]); // ✅ Fixed missing dependencies
+  }, [location.pathname, navigate]);
 
   const handleLoginSubmit = async e => {
     e.preventDefault();
