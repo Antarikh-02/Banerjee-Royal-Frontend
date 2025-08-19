@@ -101,7 +101,7 @@ export default function MyRoyalReservations() {
       return;
     } catch (err) {
       console.error('Final fallback GET /reservation failed', err);
-      setError(err.response?.data?.message || 'Could not load reservations. Check backend URL or console for details.');
+      setError(err.response?.data?.message || 'No Reservations found ');
       setReservations([]);
     } finally {
       setLoading(false);
@@ -156,7 +156,7 @@ export default function MyRoyalReservations() {
         {error && (
           <div className="max-w-3xl mx-auto mb-6">
             <div className="p-4 rounded-lg bg-red-50 text-red-800 border border-red-100">
-              <strong className="block">Error</strong>
+              <strong className="block">Log in</strong>
               <p className="mt-1">{error}</p>
             </div>
           </div>
