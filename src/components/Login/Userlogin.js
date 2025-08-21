@@ -36,7 +36,7 @@ export default function UserLogin() {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/userlogin', {
+      const response = await axios.post('https://banerjee-royal-backend.onrender.com/userlogin', {
         email: loginEmail,
         password: loginPassword,
       });
@@ -80,7 +80,7 @@ export default function UserLogin() {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/userssignup', {
+      const response = await axios.post('https://banerjee-royal-backend.onrender.com/userssignup', {
         name: signupName,
         email: signupEmail,
         password: signupPassword,
