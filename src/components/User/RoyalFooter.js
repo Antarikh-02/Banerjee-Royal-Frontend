@@ -69,8 +69,8 @@ const RoyalFooter = () => {
           <ul className="space-y-2">
             <li><Link to="/" className="hover:text-white transition">Home</Link></li>
             <li><Link to="/about" className="hover:text-white transition">About Us</Link></li>
-            <li><Link to="/menu" className="hover:text-white transition">Menu</Link></li>
-            <li><Link to="/reservations" className="hover:text-white transition">Reservations</Link></li>
+            <li><Link to="/royalmenu" className="hover:text-white transition">Menu</Link></li>
+            <li><Link to="/myroyalreservations" className="hover:text-white transition">Reservations</Link></li>
             <li><Link to="/contact" className="hover:text-white transition">Contact</Link></li>
           </ul>
         </div>

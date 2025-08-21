@@ -22,20 +22,15 @@ const ReservationView = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Change BASE_URL if needed
-  const BASE_URL = 'https://banerjee-royal-backend.onrender.com';
-  const RESERVATION_PATH = '/reservation'; // backend path
-
   // Fetch reservations from backend (no auth)
   const fetchReservations = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${BASE_URL}${RESERVATION_PATH}`);
+      const res = await axios.get('https://banerjee-royal-backend.onrender.com/reservation');
       const data = res.data && res.data.reservations ? res.data.reservations : res.data;
       setReservations(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching reservations:', err);
-      // Show a friendly message for the developer -- you can change this to a toast
       alert('Failed to fetch reservations. Check console for details.');
     } finally {
       setLoading(false);
@@ -44,17 +39,15 @@ const ReservationView = () => {
 
   useEffect(() => {
     fetchReservations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Delete a reservation (hard-delete). If you prefer to keep history, change to PATCH status='Cancelled'
+  // Delete reservation
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to cancel this reservation?')) {
       return;
     }
     try {
-      await axios.delete(`${BASE_URL}${RESERVATION_PATH}/${id}`);
-      // update UI
+      await axios.delete(`https://banerjee-royal-backend.onrender.com/reservation/${id}`);
       setReservations(prev => prev.filter(r => r._id !== id));
     } catch (err) {
       console.error('Error deleting reservation:', err);
@@ -64,9 +57,7 @@ const ReservationView = () => {
 
   // Prepare for edit
   const handleEditPrep = (r) => {
-    // Clear old data
     DETAIL_KEYS.forEach((k) => localStorage.removeItem(k));
-    // Store new
     localStorage.setItem('id', r._id);
     localStorage.setItem('name', r.name);
     localStorage.setItem('phone', r.phone);

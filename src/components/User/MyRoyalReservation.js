@@ -6,7 +6,15 @@ import RoyalFooter from './RoyalFooter';
 import BottomNav from './BottomNav';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import { useNavigate } from 'react-router-dom';
+
+// Create axios instance with centralized baseURL
+// Set REACT_APP_API_URL in .env for deployments (e.g. REACT_APP_API_URL=https://banerjee-royal-backend.onrender.com)
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL || 'https://banerjee-royal-backend.onrender.com',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 export default function MyRoyalReservations() {
   const [reservations, setReservations] = useState([]);
@@ -14,9 +22,7 @@ export default function MyRoyalReservations() {
   const [loadingActionId, setLoadingActionId] = useState(null);
   const [error, setError] = useState('');
   const [expanded, setExpanded] = useState({});
-//   const navigate = useNavigate();
 
-  const BASE_URL = 'https://banerjee-royal-backend.onrender.com';
   const RESERVATION_PATH = '/reservation';
 
   // read stored user info
@@ -69,39 +75,50 @@ export default function MyRoyalReservations() {
     });
   };
 
+  // Improved fetchReservations: try /reservation/user/:userId then fall back to /reservation and filter
   const fetchReservations = async () => {
     setError('');
     setLoading(true);
 
-    // 1) If we have userId call /reservation/user/:userId
-    if (localUserId) {
-      try {
-        const url = `${BASE_URL}${RESERVATION_PATH}/user/${encodeURIComponent(localUserId)}`;
-        const res = await axios.get(url);
-        const items = res.data?.reservations ?? [];
-        setReservations(sortByDateAndSlot(items));
-        return;
-      } catch (err) {
-        // If 404 or other error, don't show all — try fallbacks but always filter
-        console.warn('GET /reservation/user/:userId failed', err?.response?.status, err?.message);
-        // continue to fallback below
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    // 2) Try GET /reservation and then filter by local user (defensive)
     try {
+      // 1) Try the user-specific endpoint if we have any user identifier
+      if (localUserId) {
+        try {
+          const url = `${RESERVATION_PATH}/user/${encodeURIComponent(localUserId)}`;
+          console.log('[fetchReservations] trying GET', url);
+          const res = await api.get(url);
+          console.log('[fetchReservations] GET /user/:userId response:', res.status, res.data);
+          const items = res.data?.reservations ?? [];
+          if (Array.isArray(items) && items.length > 0) {
+            setReservations(sortByDateAndSlot(items));
+            setLoading(false);
+            return;
+          }
+          console.warn('[fetchReservations] /user/:userId returned no items, falling back to /reservation');
+        } catch (err) {
+          console.warn('[fetchReservations] GET /user/:userId failed', err?.response?.status, err?.message);
+          // continue to fallback below
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      // 2) Global fallback: fetch all reservations then filter locally by known identifiers
       setLoading(true);
-      const res = await axios.get(`${BASE_URL}${RESERVATION_PATH}`);
-      const items = res.data?.reservations ?? [];
-      // IMPORTANT: always filter by local user (so we never show other users' reservations)
-      const filtered = filterByLocalUser(items);
+      console.log('[fetchReservations] trying global GET', `${RESERVATION_PATH}`);
+      const resAll = await api.get(`${RESERVATION_PATH}`);
+      console.log('[fetchReservations] GET /reservation response:', resAll.status, resAll.data);
+
+      const itemsAll = resAll.data?.reservations ?? [];
+      const itemsArray = Array.isArray(itemsAll) ? itemsAll : [];
+
+      const filtered = filterByLocalUser(itemsArray);
+      console.log('[fetchReservations] filtered count:', filtered.length, 'localUserId/email:', localUserId, localUserEmail);
+
       setReservations(sortByDateAndSlot(filtered));
-      return;
     } catch (err) {
       console.error('Final fallback GET /reservation failed', err);
-      setError(err.response?.data?.message || 'No Reservations found ');
+      setError(err.response?.data?.message || 'No Reservations found');
       setReservations([]);
     } finally {
       setLoading(false);
@@ -122,7 +139,7 @@ export default function MyRoyalReservations() {
     if (!window.confirm('Are you sure you want to cancel this reservation?')) return;
     setLoadingActionId(id);
     try {
-      await axios.patch(`${BASE_URL}${RESERVATION_PATH}/${id}`, { status: 'Cancelled' });
+      await api.patch(`${RESERVATION_PATH}/${id}`, { status: 'Cancelled' });
       toast.success('Reservation cancelled.');
       setReservations(prev => prev.map(r => r._id === id ? { ...r, status: 'Cancelled' } : r));
     } catch (err) {
@@ -145,7 +162,6 @@ export default function MyRoyalReservations() {
           <p className="text-lg text-amber-800 max-w-2xl mx-auto">Only reservations made by the current user are shown here.</p>
         </div>
 
-        
         {loading && (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-700 mb-4"></div>
@@ -214,7 +230,7 @@ export default function MyRoyalReservations() {
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${isConfirmed ? 'bg-green-100 text-green-800' : isPending ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
                           {r.status}
                         </span>
-                        <span className="ml-3 text-xs text-gray-500">Reservation ID: {r._1d || r._id}</span>
+                        <span className="ml-3 text-xs text-gray-500">Reservation ID: {r._id || r.id}</span>
                       </div>
 
                       {expanded[r._id] && (
